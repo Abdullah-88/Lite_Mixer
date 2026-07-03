@@ -39,7 +39,7 @@ class GatingUnit(nn.Module):
 
 class LiteMixerBlock(nn.Module):
 
-    def __init__(self, dim, num_patch):
+    def __init__(self, dim, num_tokens):
         super().__init__()
         
         self.norm =  VectorDynamicTanh(dim)
@@ -48,7 +48,7 @@ class LiteMixerBlock(nn.Module):
         self.context_process = nn.Sequential(
            
             Rearrange('b n d -> b d n'),
-            GatingUnit(num_patch),
+            GatingUnit(num_tokens),
             Rearrange('b d n -> b n d')
         )
 
@@ -77,20 +77,14 @@ class LiteMixerBlock(nn.Module):
 
 
 class LiteMixer(nn.Module):
-    def __init__(self, d_model,num_patch, num_layers):
+    def __init__(self, d_model, num_tokens, num_layers):
         super().__init__()
         
         self.model = nn.Sequential(
-            *[LiteMixerBlock(d_model,num_patch) for _ in range(num_layers)]
+            *[LiteMixerBlock(d_model, num_tokens) for _ in range(num_layers)]
         )
 
     def forward(self, x):
        
         return self.model(x)
-
-
-
-
-
-
 

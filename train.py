@@ -58,10 +58,11 @@ class LiteMixerImageClassification(LiteMixer):
         in_channels=3,
         num_classes=10,     
         d_model = 256,
+        num_tokens = 64,
         num_layers=4,
        
     ):
-        super().__init__(d_model, num_layers)
+        super().__init__(d_model, num_tokens, num_layers)
         self.patcher = nn.Conv2d(
             in_channels, d_model, kernel_size=patch_size, stride=patch_size
         )

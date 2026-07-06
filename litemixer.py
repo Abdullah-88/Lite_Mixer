@@ -2,20 +2,16 @@ import torch
 from torch import nn
 from einops.layers.torch import Rearrange
 
-
 class VectorDynamicTanh(nn.Module):
     def __init__(self, input_shape):
     
         super().__init__()
-        
-           
+                   
         self.alpha = nn.Parameter(torch.randn(input_shape))
        
-
     def forward(self, x):
         x = torch.tanh(self.alpha * x)
         return x
-
      
 class GatingUnit(nn.Module):
     def __init__(self,dim):
@@ -25,8 +21,7 @@ class GatingUnit(nn.Module):
         self.proj_2 =  nn.Linear(dim,dim,bias=False)
             
         self.silu = nn.SiLU()
-       
-             	   
+                    	   
     def forward(self, x):
 
         u, v = x, x 
@@ -44,7 +39,6 @@ class LiteMixerBlock(nn.Module):
         
         self.norm =  VectorDynamicTanh(dim)
        
-
         self.context_process = nn.Sequential(
            
             Rearrange('b n d -> b d n'),
@@ -54,7 +48,6 @@ class LiteMixerBlock(nn.Module):
 
         self.token_process = GatingUnit(dim)
         
-
     def forward(self, x):
         
         residual = x
@@ -75,9 +68,8 @@ class LiteMixerBlock(nn.Module):
 
         return x
 
-
 class LiteMixer(nn.Module):
-    def __init__(self, d_model, num_tokens, num_layers):
+    def __init__(self, d_model, num_tokens , num_layers):
         super().__init__()
         
         self.model = nn.Sequential(
@@ -87,4 +79,3 @@ class LiteMixer(nn.Module):
     def forward(self, x):
        
         return self.model(x)
-

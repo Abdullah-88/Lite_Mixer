@@ -14,11 +14,11 @@ class VectorDynamicTanh(nn.Module):
         return x
      
 class GatingUnit(nn.Module):
-    def __init__(self,dim):
+    def __init__(self, dim):
         super().__init__()
 
-        self.proj_1 =  nn.Linear(dim,dim,bias=False)
-        self.proj_2 =  nn.Linear(dim,dim,bias=False)
+        self.proj_1 = nn.Linear(dim, dim, bias = False)
+        self.proj_2 = nn.Linear(dim, dim, bias = False)
             
         self.silu = nn.SiLU()
                     	   
